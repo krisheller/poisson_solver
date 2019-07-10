@@ -1,0 +1,38 @@
+#
+#     This Makefile build the linear_sys_solve_test_driver routine
+#
+#     Usage:
+#
+#            1. Edit the LOPTS line to point to the directory where
+#               the libraries liblapack.a and librefblas.a are found
+#
+#            2. Type "make"
+#
+#            3. Run the linear_sys_solve_test_driver executable
+#
+LOPTS = -L/home/krisheller/Code/Fortran/LapackSetupTest/lapack-3.8.0 -llapack -lrefblas
+#
+#              Fortran compiler/linker & options macros
+#
+FORT = gfortran
+FOPTS = -fbounds-check
+LINK = gfortran
+CODE = problem2d.f08 linear_sys_solve.f08
+OBJS = linear_sys_solve.o problem2d.o
+
+all: problem2d
+
+problem2d: $(OBJS)
+	$(LINK) -o problem2d $(OBJS) $(LOPTS)
+
+problem2d.o: problem2d.f08
+	$(FORT) -c problem2d.f08
+
+linear_sys_solve.o: linear_sys_solve.f08
+	$(FORT) -c linear_sys_solve.f08
+
+clean:
+	/bin/rm *.o
+	/bin/rm *.mod
+	/bin/rm problem2d
+
